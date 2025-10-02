@@ -175,23 +175,27 @@ dataset = project.version(1).download("yolov8")
 
  
 
-    POST-ANNOTATION STEP 
+POST-ANNOTATION STEP 
 Download the annotated dataset locally: 
- python3 postAnotation.py 
+	python3 postAnotation.py 
  
  
 
-    TRAINING STEP
+TRAINING STEP
 Start training your custom model: 
- python3 train.py 
+	python3 train.py 
 
 
 
 
-    TEST THE MODEL STEP
+TEST THE MODEL STEP
 Test the trained model (camera must be connected): 
- python3 testModel.py 
+	python3 testModel.py 
 
+TO do image test that are inside of the YOLO-INFERENCING FOLDER 
+
+	yolo predict model=./runs/detect/train/weights/best.pt source='TESTimg1.jpg'
+ 
  
 
 NOTE: All commands assume you are in the YOLO-inference folder. 
