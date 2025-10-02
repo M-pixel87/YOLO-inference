@@ -176,23 +176,19 @@ dataset = project.version(1).download("yolov8")
  
 
     POST-ANNOTATION STEP 
-
- 
-
 Download the annotated dataset locally: 
  python3 postAnotation.py 
-
-    TRAINING 
-
+ 
  
 
+    TRAINING STEP
 Start training your custom model: 
  python3 train.py 
 
-    TEST THE MODEL 
 
- 
 
+
+    TEST THE MODEL STEP
 Test the trained model (camera must be connected): 
  python3 testModel.py 
 
