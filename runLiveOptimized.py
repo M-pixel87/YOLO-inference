@@ -57,6 +57,10 @@ while True:
             # Calculate the center of the box
             center_x = (x1 + x2) / 2
             
+            
+            center_y = (y1 + y2) / 2
+            
+            
             position = ""
             if center_x < frame_width / 3:
                 position = "Left"
@@ -67,6 +71,7 @@ while True:
 
             # Print the extracted information to the terminal
             print(f"Position: {position}, "
+                  f"Center (X, Y): ({int(center_x)}, {int(center_y)}), "
                   f"Accuracy: {confidence:.2f} ({int(confidence*100)}%), "
                   f"Box Width: {int(box_width)} pixels")
 
