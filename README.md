@@ -199,3 +199,14 @@ TO do image test that are inside of the YOLO-INFERENCING FOLDER
  
 
 NOTE: All commands assume you are in the YOLO-inference folder. 
+
+
+
+OPTIMIZATION PART UNDERTESTING
+First, you need to convert your custom best.pt model into a highly optimized best.engine file. This is done with a simple Python script.
+use the command python3 modelOptimizement.py
+this will not work if you have two best.pt or what knot
+then run 
+command runLiveOptimized.py 
+
+
