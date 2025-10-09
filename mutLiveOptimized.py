@@ -63,33 +63,30 @@ print("Press 'q' to quit.")
 frame_width = int(cap.stream.get(cv2.CAP_PROP_FRAME_WIDTH))
 
 while True:
+
+
+    # ... inside your while True loop ...
+    
     # Grab the latest frame from the threaded stream
     frame = cap.read()
     if frame is None:
         break
-
+    
     # Run inference on the current frame
     results = model(frame, verbose=False) 
-
-    # --- OPTIMIZED POST-PROCESSING ---
-    # The results[0].plot() is convenient but slow. For max speed, draw manually.
+    
+    # --- FAST PART: Just Process the Data ---
     for result in results:
         for box in result.boxes:
+            # Get the values you need
             x1, y1, x2, y2 = map(int, box.xyxy[0])
             confidence = box.conf[0]
             class_id = int(box.cls[0])
-            label = f"{model.names[class_id]} {confidence:.2f}"
+            class_name = model.names[class_id]
             
-            # Draw rectangle and text using OpenCV (faster than .plot())
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            # Now just use the data! For example, print it:
+            print(f"Detected: {class_name} with {confidence:.2f} confidence at [{x1}, {y1}, {x2}, {y2}]")
 
-    # Display the frame
-    cv2.imshow("High-Performance Inference", frame)
-
-    # Exit the loop if the 'q' key is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
 
 # Clean up
 print("Stopping...")
