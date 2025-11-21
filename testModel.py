@@ -3,7 +3,7 @@ import cv2
 
 # --- Configuration ---
 # Path to your custom-trained model
-MODEL_PATH = 'runs/detect/train/weights/best.pt'
+MODEL_PATH = "runs/detect/train5/weights/best.pt"
 CAMERA_INDEX = 0
 # ---------------------
 

@@ -1,13 +1,14 @@
 from ultralytics import YOLO
 
 # --- Configuration ---
-# Path to your dataset's YAML file (find this in the folder Roboflow created)
-DATASET_YAML_PATH = 'Yolo_inferencing-1/data.yaml' 
-EPOCHS = 50          # How many times to go through the data. Start with 50-100.
-IMAGE_SIZE = 640     # The size of images to train on. 640 is a good default.
+# Path to your dataset's YAML file
+DATASET_YAML_PATH = "Yolo_inferencing-10/data.yaml"
+EPOCHS = 25 
+IMAGE_SIZE = 640
+CUSTOM_NAME = "NormModel" # <--- The App will change this line
 # ---------------------
 
-# Load a pretrained model (yolov8n.pt is small and fast)
+# Load a pretrained model
 model = YOLO('yolov8n.pt')
 
 # Train the model
@@ -16,7 +17,8 @@ if __name__ == '__main__':
         data=DATASET_YAML_PATH,
         epochs=EPOCHS,
         imgsz=IMAGE_SIZE,
-        device=0  # Use GPU 0
+        device=0,
+        name=CUSTOM_NAME,   # Uses the variable above
     )
 
-print("✅ Training complete! Model saved in the 'runs' directory.")
+print(f"✅ Training complete! Model saved in 'runs/detect/{CUSTOM_NAME}'")

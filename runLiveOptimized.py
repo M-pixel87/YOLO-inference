@@ -3,18 +3,17 @@ from ultralytics import YOLO
 
 # --- Configuration ---
 # Path to your optimized TensorRT model
-MODEL_PATH = 'runs/detect/train/weights/best.engine' 
-
-# Camera index (0 is usually the default webcam)
+MODEL_PATH = "runs/detect/train5/weights/best.engine"
 CAMERA_INDEX = 0
 # ---------------------
 
 # Load the optimized TensorRT model
 try:
+    print(f"Attempting to load: {MODEL_PATH}")
     model = YOLO(MODEL_PATH)
 except Exception as e:
     print(f"Error loading model: {e}")
-    print("Please ensure the .engine file exists and was generated on this machine.")
+    print("Check if the file name in the 'Optimize' tab matches your training name.")
     exit()
 
 # Initialize the camera
@@ -27,64 +26,34 @@ print("Running live inference with optimized model...")
 print("Press 'q' to quit.")
 
 while True:
-    # Read a frame from the camera
     ret, frame = cap.read()
-    if not ret:
-        print("Error: Failed to grab frame.")
-        break
+    if not ret: break
     
-    # Get the width of the camera frame
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     
-    # Run inference on the current frame
-    results = model(frame, verbose=False) # Set verbose=False to clean up terminal output
+    # Run inference
+    results = model(frame, verbose=False) 
 
-    # Process the results
     for result in results:
-        # Iterate through each detected object in the frame
         for box in result.boxes:
-            # --- 1. Get Bounding Box Coordinates ---
-            # Get the coordinates in (left, top, right, bottom) format
             x1, y1, x2, y2 = box.xyxy[0]
-            
-            # --- 2. Get Confidence Score (Accuracy) ---
             confidence = box.conf[0]
-            
-            # --- 3. Get Box Width ---
             box_width = x2 - x1
-            
-            # --- 4. Determine Horizontal Position ---
-            # Calculate the center of the box
             center_x = (x1 + x2) / 2
-            
-            
             center_y = (y1 + y2) / 2
             
-            
             position = ""
-            if center_x < frame_width / 3:
-                position = "Left"
-            elif center_x < frame_width * (2/3):
-                position = "Middle"
-            else:
-                position = "Right"
+            if center_x < frame_width / 3: position = "Left"
+            elif center_x < frame_width * (2/3): position = "Middle"
+            else: position = "Right"
 
-            # Print the extracted information to the terminal
-            print(f"Position: {position}, "
-                  f"Center (X, Y): ({int(center_x)}, {int(center_y)}), "
-                  f"Accuracy: {confidence:.2f} ({int(confidence*100)}%), "
-                  f"Box Width: {int(box_width)} pixels")
+            print(f"Pos: {position} | Acc: {int(confidence*100)}% | Width: {int(box_width)}")
 
-    # Get the annotated frame with bounding boxes drawn on it
     annotated_frame = results[0].plot()
-
-    # Display the frame
     cv2.imshow("Optimized Model - Live", annotated_frame)
 
-    # Exit the loop if the 'q' key is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Release the camera and close all OpenCV windows
 cap.release()
 cv2.destroyAllWindows()
